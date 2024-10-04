@@ -1,6 +1,10 @@
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"errors"
+	"slices"
+)
 
 type ResponseLocationAreas struct {
 	EncounterMethodRates []struct {
@@ -57,6 +61,9 @@ type ResponseLocationAreas struct {
 
 func unmarshalLocationAreas(data []byte) (ResponseLocationAreas, error) {
 	response := ResponseLocationAreas{}
+	if slices.Equal(data, []byte("Not Found")) {
+		return ResponseLocationAreas{}, errors.New("location does not exist")
+	}
 	err := json.Unmarshal(data, &response)
 	if err != nil {
 		return ResponseLocationAreas{}, err
