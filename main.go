@@ -15,17 +15,19 @@ type Command struct {
 }
 
 type Config struct {
-	client PokeClient
-	next   string
-	prev   string
+	client  PokeClient
+	next    string
+	prev    string
+	pokedex map[string]Pokemon
 }
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	cfg := &Config{
-		client: newClient(5 * time.Second),
-		next:   "https://pokeapi.co/api/v2/location-area/",
-		prev:   "",
+		client:  newClient(5 * time.Second),
+		next:    "https://pokeapi.co/api/v2/location-area/",
+		prev:    "",
+		pokedex: make(map[string]Pokemon),
 	}
 	for {
 		fmt.Printf("pokedex > ")
@@ -45,11 +47,13 @@ func main() {
 				if err != nil {
 					fmt.Println(err)
 				}
-			} else {
+			} else if len(words) == 2 {
 				err := command.callback(cfg, words[1])
 				if err != nil {
 					fmt.Println(err)
 				}
+			} else {
+				fmt.Println("Invalid command.")
 			}
 			continue
 		}
@@ -82,6 +86,11 @@ func getCommands() map[string]Command {
 			name:        "explore",
 			description: "List all the Pokemon in a given location",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Attempt to catch a pokemon by name",
+			callback:    commandCatch,
 		},
 	}
 }
