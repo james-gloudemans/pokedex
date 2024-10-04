@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func commandExplore(cfg *Config, location []string) error {
+func commandExplore(cfg *Config, location ...string) error {
 	response, err := cfg.client.listLocationPokemon(location[0])
 	if err != nil {
 		return err

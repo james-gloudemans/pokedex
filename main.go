@@ -11,7 +11,7 @@ import (
 type Command struct {
 	name        string
 	description string
-	callback    func(cfg *Config, params []string) error
+	callback    func(*Config, ...string) error
 }
 
 type Config struct {
@@ -41,12 +41,12 @@ func main() {
 			continue
 		} else {
 			if len(words) == 1 {
-				err := command.callback(cfg, nil)
+				err := command.callback(cfg, []string{}...)
 				if err != nil {
 					fmt.Println(err)
 				}
 			} else {
-				err := command.callback(cfg, words[1:])
+				err := command.callback(cfg, words[1])
 				if err != nil {
 					fmt.Println(err)
 				}

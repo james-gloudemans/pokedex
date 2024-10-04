@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func commandMapb(cfg *Config, _ []string) error {
+func commandMapb(cfg *Config, _ ...string) error {
 	if cfg.prev == "" {
 		fmt.Println()
 		return nil

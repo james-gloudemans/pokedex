@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func commandMap(cfg *Config, _ []string) error {
+func commandMap(cfg *Config, _ ...string) error {
 	if cfg.next == "" {
 		fmt.Println()
 		return nil
