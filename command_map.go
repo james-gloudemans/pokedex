@@ -4,11 +4,12 @@ import (
 	"fmt"
 )
 
-func commandMap(cfg *Config) error {
+func commandMap(cfg *Config, _ []string) error {
 	if cfg.next == "" {
 		fmt.Println()
 		return nil
 	}
+
 	response, err := cfg.client.listLocations(cfg.next)
 	if err != nil {
 		return err

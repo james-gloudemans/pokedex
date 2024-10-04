@@ -11,7 +11,7 @@ import (
 type Command struct {
 	name        string
 	description string
-	callback    func(cfg *Config) error
+	callback    func(cfg *Config, params []string) error
 }
 
 type Config struct {
@@ -40,9 +40,16 @@ func main() {
 			fmt.Println("Unknown command.")
 			continue
 		} else {
-			err := command.callback(cfg)
-			if err != nil {
-				fmt.Println(err)
+			if len(words) == 1 {
+				err := command.callback(cfg, nil)
+				if err != nil {
+					fmt.Println(err)
+				}
+			} else {
+				err := command.callback(cfg, words[1:])
+				if err != nil {
+					fmt.Println(err)
+				}
 			}
 			continue
 		}
@@ -70,6 +77,11 @@ func getCommands() map[string]Command {
 			name:        "mapb",
 			description: "Explore previous locations",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "List all the Pokemon in a given location",
+			callback:    commandExplore,
 		},
 	}
 }
